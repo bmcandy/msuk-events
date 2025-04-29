@@ -49,9 +49,9 @@ jobs:
       - name: Install Node.js dependencies
         run: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true"
       - name: Scrape events
-        run: "python3 scrape_events.py --output './data/events.json'"
+        run: "python3 scrape_events.py --output './events.json'"
       - name: Process events
-        run: "python3 process_events.py --input './data/events.json' --output './hugo_site/content'"
+        run: "python3 process_events.py --input './events.json' --output './hugo_site/content'"
       - name: Build with Hugo
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
