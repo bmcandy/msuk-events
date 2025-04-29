@@ -50,6 +50,8 @@ jobs:
         run: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true"
       - name: Scrape events
         run: "python3 scrape_events.py --output './events.json'"
+      - name: Create content directory
+        run: "mkdir ./hugo_site/content"
       - name: Process events
         run: "python3 process_events.py --input './events.json' --output './hugo_site/content'"
       - name: Build with Hugo
