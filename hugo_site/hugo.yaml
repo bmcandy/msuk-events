@@ -1,0 +1,74 @@
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+  highlight:
+    noClasses: false
+menu:
+  main:
+  - name: Search
+    params:
+      type: search
+    weight: 4
+  - name: Treasure Hunt
+    url: /treasure_hunt/
+    weight: 1
+  - name: Autotests
+    url: /autotests/
+    weight: 1
+  - name: Circuit Racing
+    url: /circuit_racing/
+    weight: 1
+  - name: Gymkhana
+    url: /gymkhana/
+    weight: 1
+  - name: KX Arrive & Drive
+    url: /kx_arrive__drive/
+    weight: 1
+  - name: Speed
+    url: /speed/
+    weight: 1
+  - name: Karting
+    url: /karting/
+    weight: 1
+  - name: Rallying
+    url: /rallying/
+    weight: 1
+  - name: Cross Country (4x4)
+    url: /cross_country_4x4/
+    weight: 1
+  - name: Touring Assembly/Procession
+    url: /touring_assemblyprocession/
+    weight: 1
+  - name: Super KX
+    url: /super_kx/
+    weight: 1
+  - name: Stage Rallying
+    url: /stage_rallying/
+    weight: 1
+  - name: Trials (Car)
+    url: /trials_car/
+    weight: 1
+  - name: Drift Pro
+    url: /drift_pro/
+    weight: 1
+  - name: Autocross & Rallycross
+    url: /autocross__rallycross/
+    weight: 1
+  - name: Concours
+    url: /concours/
+    weight: 1
+module:
+  imports:
+  - path: github.com/imfing/hextra
+params:
+  editURL:
+    base: https://github.com/imfing/hextra-starter-template/edit/main/content
+    enable: false
+  footer:
+    displayCopyright: false
+    displayPoweredBy: false
+  navbar:
+    displayLogo: false
+    displayTitle: true
+title: Motorsport UK Events by Speed on Screen
