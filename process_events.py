@@ -6,6 +6,7 @@ import re
 import yaml  # Add this import for YAML handling
 from collections import defaultdict  # Add this import for grouping events
 
+
 def validate_and_format_date(subtitle):
     try:
         # Remove ordinal suffixes (e.g., "1st", "2nd", "3rd") from the date
@@ -18,10 +19,21 @@ def validate_and_format_date(subtitle):
     except ValueError:
         raise ValueError(f"Invalid date format in subtitle: {subtitle}")
 
+
 def process_url(url):
     """Remove special characters from url and return a valid URL."""
-    url = url.replace(" ", "_").replace("&", "").replace("/", "").replace("(", "").replace(")", "").replace("'", "").replace('"', "").lower()
+    url = (
+        url.replace(" ", "_")
+        .replace("&", "")
+        .replace("/", "")
+        .replace("(", "")
+        .replace(")", "")
+        .replace("'", "")
+        .replace('"', "")
+        .lower()
+    )
     return url
+
 
 def update_hugo_menu(event_type, output_dir):
     """Update the Hugo menu configuration to include the event type and sub-type."""
@@ -29,13 +41,9 @@ def update_hugo_menu(event_type, output_dir):
     # Split event type into main type and sub-type
     event_parts = event_type.split(" - ")
     main_type = process_url(event_parts[0])
-    
-    menu_entry = {
-        "name": event_parts[0],
-        "url": f"/{main_type}/",
-        "weight": 1
-    }
-    
+
+    menu_entry = {"name": event_parts[0], "url": f"/{main_type}/", "weight": 1}
+
     # Load or create the hugo.yaml file
     if os.path.exists(hugo_config_path):
         with open(hugo_config_path, "r") as f:
@@ -59,6 +67,7 @@ def update_hugo_menu(event_type, output_dir):
     with open(hugo_config_path, "w") as f:
         yaml.dump(hugo_config, f)
 
+
 def clean_hugo_menu(output_dir):
     """Remove all menu items below the 'Search' item in the Hugo menu configuration."""
     hugo_config_path = os.path.join(output_dir, "../hugo.yaml")
@@ -75,13 +84,17 @@ def clean_hugo_menu(output_dir):
     menu.setdefault("main", [])
 
     # Remove all menu items below the "Search" item
-    search_index = next((i for i, entry in enumerate(menu["main"]) if entry.get("name") == "Search"), None)
+    search_index = next(
+        (i for i, entry in enumerate(menu["main"]) if entry.get("name") == "Search"),
+        None,
+    )
     if search_index is not None:
-        menu["main"] = menu["main"][:search_index + 1]
+        menu["main"] = menu["main"][: search_index + 1]
 
     # Save the updated hugo.yaml
     with open(hugo_config_path, "w") as f:
         yaml.dump(hugo_config, f)
+
 
 def generate_main_index(output_dir, grouped_events):
     """Generate an _index.md file listing all main types and sub-types with links."""
@@ -100,19 +113,19 @@ def generate_main_index(output_dir, grouped_events):
     # Write the _index.md file
     with open(index_file, "w") as f:
         f.write(f"---\n")
-        f.write(f"title: \"Event Types\"\n")
+        f.write(f'title: "Event Types"\n')
         f.write(f"date: \"{datetime.datetime.now().strftime('%Y-%m-%d')}\"\n")
         f.write(f"---\n\n")
         f.write(f"# Event Types\n\n")
         for main_type, sub_types in sorted(event_structure.items()):
             main_type_title = main_type.replace("_", " ").title()
-            f.write(f"## [{main_type_title}](/{main_type}/)\n")
+            f.write(f"## [{main_type_title}]({main_type}/)\n")
             for sub_type in sorted(sub_types):
                 if sub_type:
                     sub_type_title = sub_type.replace("_", " ").title()
-                    f.write(f"[{sub_type_title}](/{main_type}/{sub_type}/) | ")
+                    f.write(f"[{sub_type_title}]({main_type}/{sub_type}/) | ")
                 else:
-                    f.write(f"[{main_type.title()}](/{main_type}/)")
+                    f.write(f"[{main_type.title()}]({main_type}/)")
             f.write("\n")
 
     # Write the sub-main index files
@@ -123,7 +136,7 @@ def generate_main_index(output_dir, grouped_events):
         sub_index_file = os.path.join(main_type_dir, "_index.md")
         with open(sub_index_file, "w") as f:
             f.write(f"---\n")
-            f.write(f"title: \"%s\"\n" % main_type.replace("_", " ").title())
+            f.write(f'title: "%s"\n' % main_type.replace("_", " ").title())
             f.write(f"date: \"{datetime.datetime.now().strftime('%Y-%m-%d')}\"\n")
             f.write(f"---\n\n")
 
@@ -131,11 +144,12 @@ def generate_main_index(output_dir, grouped_events):
             for sub_type in sorted(sub_types):
                 if sub_type:
                     sub_type_title = sub_type.replace("_", " ").title()
-                    f.write(f"## [{sub_type_title}](/{main_type}/{sub_type}/)\n")
+                    f.write(f"## [{sub_type_title}]({main_type}/{sub_type}/)\n")
                 else:
-                    f.write(f"## [{main_type.title()}](/{main_type}/)\n")
+                    f.write(f"## [{main_type.title()}]({main_type}/)\n")
 
     print(f"Main _index generated at {index_file}")
+
 
 def process_events(input_file, output_dir):
     """Process Motorsport UK events for Hugo content generation."""
@@ -159,10 +173,15 @@ def process_events(input_file, output_dir):
     for event in events:
         info_list = event.get("info", [])
         if not isinstance(info_list, list):
-            print(f"Warning: 'info' is not a list for event ID {event.get('id', 'Unknown')}. Skipping...")
+            print(
+                f"Warning: 'info' is not a list for event ID {event.get('id', 'Unknown')}. Skipping..."
+            )
             continue
 
-        event_type = next((info["value"] for info in info_list if info.get("title") == "Event Type"), "Unknown")
+        event_type = next(
+            (info["value"] for info in info_list if info.get("title") == "Event Type"),
+            "Unknown",
+        )
         # Split event type into main type and sub-type
         event_parts = event_type.split(" - ")
         main_type = process_url(event_parts[0])
@@ -178,18 +197,27 @@ def process_events(input_file, output_dir):
         update_hugo_menu(event_type, output_dir)
 
         # Add event to the grouped list
-        grouped_events[event_dir].append({
-            "id": event["id"],
-            "name": event["name"],
-            "date": validate_and_format_date(event["subtitle"]),
-            "address": event["address"],
-            "telephone": event["telephone"],
-            "email": event["email"],
-            "event_type": event_type,
-            "organiser": next((info["value"] for info in info_list if info.get("title") == "Event Organiser"), "Unknown"),
-            "img_url": event["img_url"],
-            "actions": event["actions"]
-        })
+        grouped_events[event_dir].append(
+            {
+                "id": event["id"],
+                "name": event["name"],
+                "date": validate_and_format_date(event["subtitle"]),
+                "address": event["address"],
+                "telephone": event["telephone"],
+                "email": event["email"],
+                "event_type": event_type,
+                "organiser": next(
+                    (
+                        info["value"]
+                        for info in info_list
+                        if info.get("title") == "Event Organiser"
+                    ),
+                    "Unknown",
+                ),
+                "img_url": event["img_url"],
+                "actions": event["actions"],
+            }
+        )
 
     # Write grouped events to _index.md files
     for event_dir, events in grouped_events.items():
@@ -198,7 +226,9 @@ def process_events(input_file, output_dir):
         index_file = os.path.join(event_dir, "_index.md")
         with open(index_file, "w") as f:
             f.write(f"---\n")
-            f.write(f"title: \"%s\"\n" % event_dir.split(os.sep)[-1].replace("_", " ").title())
+            f.write(
+                f'title: "%s"\n' % event_dir.split(os.sep)[-1].replace("_", " ").title()
+            )
             f.write(f"date: \"{datetime.datetime.now().strftime('%Y-%m-%d')}\"\n")
             f.write(f"---\n\n")
             for event in events:
@@ -209,17 +239,17 @@ def process_events(input_file, output_dir):
                 # f.write(f"- **Email:** {event['email']}\n")
                 # f.write(f"- **Event Type:** {event['event_type']}\n")
                 f.write(f"- **Organiser:** {event['organiser']}\n")
-                if event['actions']:
+                if event["actions"]:
                     f.write(f"- **More Info:** {event['actions'][0]['url']}\n\n")
                 else:
                     # look up the organiser in EventOrganisers.csv and add the URL from the second column
                     with open("EventOrganisers.csv", "r") as csvfile:
                         for line in csvfile:
-                            if event['organiser'] in line:
+                            if event["organiser"] in line:
                                 url = line.split(",")[1].strip()
                                 f.write(f"- **More Info:** {url}\n\n")
                 # Add the image URL if it doesn't contain "motorsport-uk-logo"
-                if "motorsport-uk-logo" not in event['img_url']:
+                if "motorsport-uk-logo" not in event["img_url"]:
                     f.write(f"![Event Image]({event['img_url']})\n\n")
 
     # Generate the main _index.md file
@@ -227,9 +257,14 @@ def process_events(input_file, output_dir):
 
     print(f"Processed events saved to {output_dir}")
 
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Process Motorsport UK events for Hugo.")
+    parser = argparse.ArgumentParser(
+        description="Process Motorsport UK events for Hugo."
+    )
     parser.add_argument("--input", required=True, help="Input JSON file")
-    parser.add_argument("--output", required=True, help="Output directory for Hugo content")
+    parser.add_argument(
+        "--output", required=True, help="Output directory for Hugo content"
+    )
     args = parser.parse_args()
     process_events(args.input, args.output)
