@@ -52,6 +52,7 @@ jobs:
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
           HUGO_ENVIRONMENT: production
+        working-directory: ./hugo_site
         run: |
           hugo \
             --minify \
@@ -59,7 +60,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./public
+          path: ./hugo_site/public
 
   # Deployment job
   deploy:
