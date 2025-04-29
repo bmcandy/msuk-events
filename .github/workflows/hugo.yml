@@ -48,17 +48,19 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Install Node.js dependencies
         run: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true"
-      - name: Run installer
-        run: "./generate_site.sh"
-      # - name: Build with Hugo
-      #   env:
-      #     HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
-      #     HUGO_ENVIRONMENT: production
-      #   working-directory: ./hugo_site
-      #   run: |
-      #     hugo \
-      #       --minify \
-      #       --baseURL "${{ steps.pages.outputs.base_url }}/"
+      - name: Scrape events
+        run: "python3 scrape_events.py --output './data/events.json'"
+      - name: Process events
+        run: "python3 process_events.py --input './data/events.json' --output './hugo_site/content'"
+      - name: Build with Hugo
+        env:
+          HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
+          HUGO_ENVIRONMENT: production
+        working-directory: ./hugo_site
+        run: |
+          hugo \
+            --minify \
+            --baseURL "${{ steps.pages.outputs.base_url }}/"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
