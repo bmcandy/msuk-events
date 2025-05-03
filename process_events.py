@@ -3,7 +3,8 @@ import os
 import argparse
 import datetime
 import re
-import yaml  # Add this import for YAML handling
+
+# import yaml  # Add this import for YAML handling
 from collections import defaultdict  # Add this import for grouping events
 
 
@@ -151,11 +152,37 @@ def generate_main_index(output_dir, grouped_events):
     print(f"Main _index generated at {index_file}")
 
 
+def generate_this_week(output_dir, event):
+    """Writes an event to the /this-week/index.md"""
+    os.makedirs(os.path.join(output_dir, "this-week"), exist_ok=True)
+    output_file = os.path.join(output_dir, "this-week", "_index.md")
+    with open(output_file, "a") as f:
+        f.write(f"## {event['name']}\n")
+        f.write(f"- **Date:** {event['subtitle']}\n")
+        f.write(f"- **Location:** {event['address']}\n")
+        # f.write(f"- **Telephone:** {event['telephone']}\n")
+        # f.write(f"- **Email:** {event['email']}\n")
+        # f.write(f"- **Event Type:** {event['event_type']}\n")
+        # f.write(f"- **Organiser:** {event['organiser']}\n")
+        if event["actions"]:
+            f.write(f"- **More Info:** {event['actions'][0]['url']}\n\n")
+        # else:
+        # look up the organiser in EventOrganisers.csv and add the URL from the second column
+        # with open("EventOrganisers.csv", "r") as csvfile:
+        #     for line in csvfile:
+        #         if event["organiser"] in line:
+        #             url = line.split(",")[1].strip()
+        #             f.write(f"- **More Info:** {url}\n\n")
+        # Add the image URL if it doesn't contain "motorsport-uk-logo"
+        if "motorsport-uk-logo" not in event["img_url"]:
+            f.write(f"![Event Image]({event['img_url']})\n\n")
+
+
 def process_events(input_file, output_dir):
     """Process Motorsport UK events for Hugo content generation."""
 
     # Clean the Hugo menu before processing events
-    clean_hugo_menu(output_dir)
+    # clean_hugo_menu(output_dir)
 
     # Load the events data from the input JSON file
     with open(input_file, "r") as f:
@@ -194,7 +221,7 @@ def process_events(input_file, output_dir):
         os.makedirs(event_dir, exist_ok=True)
 
         # Update the Hugo menu
-        update_hugo_menu(event_type, output_dir)
+        # update_hugo_menu(event_type, output_dir)
 
         # Add event to the grouped list
         grouped_events[event_dir].append(
@@ -218,6 +245,12 @@ def process_events(input_file, output_dir):
                 "actions": event["actions"],
             }
         )
+
+        # check if date is in the next 7 days
+        if validate_and_format_date(
+            event["subtitle"]
+        ) >= datetime.datetime.now().strftime("%Y-%m-%d"):
+            generate_this_week(output_dir, event)
 
     # Write grouped events to _index.md files
     for event_dir, events in grouped_events.items():
