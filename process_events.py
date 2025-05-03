@@ -275,11 +275,12 @@ def process_events(input_file, output_dir):
                 # f.write(f"- **Event Type:** {event['event_type']}\n")
                 f.write(f"- **Organiser:** {event['organiser']}\n")
                 if event["actions"]:
-                    f.write(
-                        # if event["actions"][0]["url"] doesn't contain https://, add it
-                        f"- **More Info:** <https://{event['actions'][0]['url'].replace('http://', '').replace('https://', '')}>\n\n"
-                        # f"- **More Info:** [{event['actions'][0]['url']}]({event['actions'][0]['url']})\n\n"
+                    base_url = (
+                        event["actions"][0]["url"]
+                        .replace("http://", "")
+                        .replace("https://", "")
                     )
+                    f.write(f"- **More Info:** [{base_url}](https://{base_url})\n\n")
                 else:
                     # look up the organiser in EventOrganisers.csv and add the URL from the second column
                     with open("EventOrganisers.csv", "r") as csvfile:
