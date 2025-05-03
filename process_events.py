@@ -119,15 +119,18 @@ def generate_main_index(output_dir, grouped_events):
         f.write(f"---\n\n")
         f.write(f"# Event Types\n\n")
         for main_type, sub_types in sorted(event_structure.items()):
-            main_type_title = main_type.replace("_", " ").title()
-            f.write(f"## [{main_type_title}]({main_type}/)\n")
-            for sub_type in sorted(sub_types):
-                if sub_type:
-                    sub_type_title = sub_type.replace("_", " ").title()
-                    f.write(f"[{sub_type_title}]({main_type}/{sub_type}/) | ")
-                else:
-                    f.write(f"[{main_type.title()}]({main_type}/)")
-            f.write("\n")
+            if "_ncr_" in main_type:
+                print("Skipping NCR event %s" % main_type)
+            else:
+                main_type_title = main_type.replace("_", " ").title()
+                f.write(f"## [{main_type_title}]({main_type}/)\n")
+                for sub_type in sorted(sub_types):
+                    if sub_type:
+                        sub_type_title = sub_type.replace("_", " ").title()
+                        f.write(f"[{sub_type_title}]({main_type}/{sub_type}/) | ")
+                    else:
+                        f.write(f"[{main_type.title()}]({main_type}/)")
+                f.write("\n")
 
     # Write the sub-main index files
     for main_type, sub_types in sorted(event_structure.items()):
