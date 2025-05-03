@@ -57,12 +57,9 @@ def update_hugo_menu(event_type, output_dir):
     menu.setdefault("main", [])
 
     # Add main type to the menu
-    if "NCR " in event_parts[0]:
-        print("Skipping NCR event %s" % event_parts[0])
-    else:
-        if not any(entry.get("name") == event_parts[0] for entry in menu["main"]):
-            menu["main"].append(menu_entry)
-            print(f"Added main type '{event_parts[0]}' to the menu.")
+    if not any(entry.get("name") == event_parts[0] for entry in menu["main"]):
+        menu["main"].append(menu_entry)
+        print(f"Added main type '{event_parts[0]}' to the menu.")
 
     # Save the updated hugo.yaml
     with open(hugo_config_path, "w") as f:
@@ -119,9 +116,6 @@ def generate_main_index(output_dir, grouped_events):
         f.write(f"---\n\n")
         f.write(f"# Event Types\n\n")
         for main_type, sub_types in sorted(event_structure.items()):
-            # if "_ncr_" in main_type:
-            #     print("Skipping NCR event %s" % main_type)
-            # else:
             main_type_title = main_type.replace("_", " ").title()
             f.write(f"## [{main_type_title}]({main_type}/)\n")
             for sub_type in sorted(sub_types):
