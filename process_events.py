@@ -276,7 +276,12 @@ def process_events(input_file, output_dir):
                 # f.write(f"- **Event Type:** {event['event_type']}\n")
                 f.write(f"- **Organiser:** {event['organiser']}\n")
                 if event["actions"]:
-                    f.write(f"- **More Info:** {event['actions'][0]['url']}\n\n")
+                    f.write(
+                        if event["actions"][0]["url"].startswith("http"):
+                            f"- **More Info:** {event['actions'][0]['url']}\n\n"
+                        else:
+                            f"- **More Info:** https://{event['actions'][0]['url']}\n\n"
+                    )
                 else:
                     # look up the organiser in EventOrganisers.csv and add the URL from the second column
                     with open("EventOrganisers.csv", "r") as csvfile:
