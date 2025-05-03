@@ -212,7 +212,7 @@ def process_events(input_file, output_dir):
             main_type = process_url(event_parts[0])
             sub_type = process_url(event_parts[1]) if len(event_parts) > 1 else None
         else:
-            main_type = "Other"
+            main_type = "other"
             event_parts = event_type.split(" (NCR")
             sub_type = process_url(event_parts[0])
             print(event_parts[0])
