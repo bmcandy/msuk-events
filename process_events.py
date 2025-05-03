@@ -286,8 +286,14 @@ def process_events(input_file, output_dir):
                     with open("EventOrganisers.csv", "r") as csvfile:
                         for line in csvfile:
                             if event["organiser"] in line:
-                                url = line.split(",")[1].strip()
-                                f.write(f"- **More Info:** {url}\n\n")
+                                if "http" in line:
+                                    url = line.split(", ")[1].strip()
+                                else:
+                                    url = "https://%s" % line.split(",")[1].strip()
+                                organiser_name = line.split(",")[0].strip()
+                                f.write(
+                                    f"- **More Info:** [{organiser_name}]({url})\n\n"
+                                )
                 # Add the image URL if it doesn't contain "motorsport-uk-logo"
                 if "motorsport-uk-logo" not in event["img_url"]:
                     f.write(f"![Event Image]({event['img_url']})\n\n")
