@@ -34,6 +34,6 @@ params:
       path: images/logo.svg
       dark: images/logo.svg
       link: /
-      width: 80
-      height: 80
+      width: 60
+      height: 60
 title: Motorsport UK Events by Speed on Screen
