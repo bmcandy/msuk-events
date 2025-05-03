@@ -215,7 +215,6 @@ def process_events(input_file, output_dir):
             main_type = "other"
             event_parts = event_type.split(" (NCR")
             sub_type = process_url(event_parts[0])
-            print(event_parts[0])
 
         # Create directories for main type and sub-type
         event_dir = os.path.join(output_dir, main_type)
@@ -277,7 +276,9 @@ def process_events(input_file, output_dir):
                 f.write(f"- **Organiser:** {event['organiser']}\n")
                 if event["actions"]:
                     f.write(
-                        f"- **More Info:** [{event['actions'][0]['url']}]({event['actions'][0]['url']})\n\n"
+                        # if event["actions"][0]["url"] doesn't contain https://, add it
+                        f"- **More Info:** <https://{event['actions'][0]['url'].replace('http://', '').replace('https://', '')}>\n\n"
+                        # f"- **More Info:** [{event['actions'][0]['url']}]({event['actions'][0]['url']})\n\n"
                     )
                 else:
                     # look up the organiser in EventOrganisers.csv and add the URL from the second column
