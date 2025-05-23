@@ -22,6 +22,10 @@ fi
 mkdir -p "$DATA_DIR"
 mkdir -p "$HUGO_DIR"
 mkdir -p "$HUGO_DIR"/content
+mkdir -p "$HUGO_DIR"/content/info
+
+# copy info to content directory
+cp -r ./info/* "$HUGO_DIR/content/info"
 
 # Check if Hugo is installed
 if ! command -v hugo &> /dev/null

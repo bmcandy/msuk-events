@@ -111,10 +111,18 @@ def generate_main_index(output_dir, grouped_events):
     # Write the _index.md file
     with open(index_file, "w") as f:
         f.write(f"---\n")
-        f.write(f'title: "Event Types"\n')
+        f.write(f'title: "Motorsport UK Events"\n')
         f.write(f"date: \"{datetime.datetime.now().strftime('%Y-%m-%d')}\"\n")
         f.write(f"---\n\n")
-        f.write(f"# Event Types\n\n")
+        # f.write(f"# What's this site?\n\n")
+        # f.write(
+        #     f"This site is a collection of Motorsport UK events, sorted by discipline and date.  Scroll down to find what's on this week and by discipline.\n\n"
+        # )
+        f.write(f"# What's on this week?\n\n")
+        f.write(
+            f"## [This Week](/this-week/)\n\n"
+        )
+        f.write(f"# What's on in each discipline?\n\n")
         for main_type, sub_types in sorted(event_structure.items()):
             main_type_title = main_type.replace("_", " ").title()
             f.write(f"## [{main_type_title}]({main_type}/)\n")
@@ -137,8 +145,19 @@ def generate_main_index(output_dir, grouped_events):
             f.write(f'title: "%s"\n' % main_type.replace("_", " ").title())
             f.write(f"date: \"{datetime.datetime.now().strftime('%Y-%m-%d')}\"\n")
             f.write(f"---\n\n")
+            f.write(f"# What is {main_type.replace('_', ' ').title()}?\n\n")
+            # insert the main type description here if info/<main_type>.md exists otherwise info/noinfo.md
+            if not os.path.exists(os.path.join(content_dir, "info", f"{main_type}.md")):
+                with open(os.path.join(content_dir, "info", "noinfo.md"), "r") as info_file:
+                    info_content = info_file.read()
+                    f.write(info_content)
+            else:
+                with open(os.path.join(content_dir, "info", f"{main_type}.md"), "r") as info_file:
+                    info_content = info_file.read()
+                    f.write(info_content)
 
-            f.write(f"# {main_type.replace('_', ' ').title()}\n\n")
+            f.write(f"\n\n# What's on in {main_type.replace('_', ' ').title()}?\n\n")
+
             for sub_type in sorted(sub_types):
                 if sub_type:
                     sub_type_title = sub_type.replace("_", " ").title()
