@@ -305,7 +305,7 @@ def process_events(input_file, output_dir):
                 ) as info_file:
                     info_content = info_file.read()
                     f.write(info_content)
-            f.write(f"\n\n# What's on in {event_dir.split(os.sep)[-1].title()}?\n\n")
+            f.write(f"\n\n# What's on in {event_dir.split(os.sep)[-1].replace("_", " ").title()}?\n\n")
             for event in events:
                 f.write(f"## {event['name']}\n")
                 f.write(f"- **Date:** {event['date']}\n")
