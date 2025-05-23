@@ -54,6 +54,10 @@ jobs:
         run: "python3 scrape_events.py --output './events.json'"
       - name: Create content directory
         run: "mkdir ./hugo_site/content"
+      - name: Create info directory
+        run: "mkdir ./hugo_site/content/info"
+      - name: Copy info files
+        run: "cp -r ./info/* ./hugo_site/content/info"
       - name: Process events
         run: "python3 process_events.py --input './events.json' --output './hugo_site/content'"
       - name: Build with Hugo
