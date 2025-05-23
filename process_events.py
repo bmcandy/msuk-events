@@ -285,7 +285,7 @@ def process_events(input_file, output_dir):
             )
             f.write(f"date: \"{datetime.datetime.now().strftime('%Y-%m-%d')}\"\n")
             f.write(f"---\n\n")
-            f.write(f"# What is {event_dir.split(os.sep)[-1].title()}?\n\n")
+            f.write(f"# What is {event_dir.split(os.sep)[-1].replace("_", " ").title()}?\n\n")
             # Add the event type description here if info/<sub_type>.md exists otherwise info/noinfo.md
             if not os.path.exists(
                 os.path.join(output_dir, "info", f"{event_dir.split(os.sep)[-1]}.md")
