@@ -13,6 +13,24 @@ menu:
     - name: This Week
       url: /this-week/
       weight: 1
+    - name: YouTube
+      url: https://www.youtube.com/@speedonscreen
+      weight: 2
+      params:
+        icon: youtube
+        newTab: true
+    - name: Facebook
+      url: https://www.facebook.com/speedonscreen
+      weight: 2
+      params:
+        icon: facebook
+        newTab: true
+    - name: Instagram
+      url: https://www.instagram.com/speedonscreen/
+      weight: 2
+      params:
+        icon: instagram
+        newTab: true
     - name: Search
       params:
         type: search
