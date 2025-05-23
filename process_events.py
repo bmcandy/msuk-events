@@ -285,6 +285,27 @@ def process_events(input_file, output_dir):
             )
             f.write(f"date: \"{datetime.datetime.now().strftime('%Y-%m-%d')}\"\n")
             f.write(f"---\n\n")
+            f.write(f"# What is {event_dir.split(os.sep)[-1].title()}?\n\n")
+            # Add the event type description here if info/<sub_type>.md exists otherwise info/noinfo.md
+            if not os.path.exists(
+                os.path.join(output_dir, "info", f"{event_dir.split(os.sep)[-1]}.md")
+            ):
+                print(
+                    f"Can't find info file: {os.path.join(output_dir, 'info', f'{event_dir.split(os.sep)[-1]}.md')}"
+                )
+                with open(
+                    os.path.join(output_dir, "info", "noinfo.md"), "r"
+                ) as info_file:
+                    info_content = info_file.read()
+                    f.write(info_content)
+            else:
+                with open(
+                    os.path.join(output_dir, "info", f"{event_dir.split(os.sep)[-1]}.md"),
+                    "r",
+                ) as info_file:
+                    info_content = info_file.read()
+                    f.write(info_content)
+            f.write(f"\n\n# What's on in {event_dir.split(os.sep)[-1].title()}?\n\n")
             for event in events:
                 f.write(f"## {event['name']}\n")
                 f.write(f"- **Date:** {event['date']}\n")
