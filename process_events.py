@@ -323,6 +323,7 @@ def process_events(input_file, output_dir):
                     f.write(f"- **More Info:** [{base_url}](https://{base_url})\n\n")
                 else:
                     # look up the organiser in EventOrganisers.csv and add the URL from the second column
+                    orgfound = False
                     with open("EventOrganisers.csv", "r") as csvfile:
                         for line in csvfile:
                             if event["organiser"] in line:
@@ -334,6 +335,9 @@ def process_events(input_file, output_dir):
                                 f.write(
                                     f"- **More Info:** [{organiser_name}]({url})\n\n"
                                 )
+                                orgfound = True
+                    if not orgfound:
+                        f.write(f"- **Find Club:** [{organiser_name}](https://www.motorsportuk.org/clubs-organisers/find-clubs/)\n\n")
                 # Add the image URL if it doesn't contain "motorsport-uk-logo"
                 if "motorsport-uk-logo" not in event["img_url"]:
                     f.write(f"![Event Image]({event['img_url']})\n\n")
