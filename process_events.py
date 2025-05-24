@@ -337,6 +337,7 @@ def process_events(input_file, output_dir):
                                 )
                                 orgfound = True
                     if not orgfound:
+                        organiser_name = event["organiser"]
                         f.write(f"- **Find Club:** [{organiser_name}](https://www.motorsportuk.org/clubs-organisers/find-clubs/)\n\n")
                 # Add the image URL if it doesn't contain "motorsport-uk-logo"
                 if "motorsport-uk-logo" not in event["img_url"]:
