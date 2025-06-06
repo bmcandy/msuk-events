@@ -55,3 +55,6 @@ params:
       width: 60
       height: 60
 title: Motorsport UK Events by Speed on Screen
+services:
+  googleAnalytics:
+    ID: G-XL3LEPZ96B
