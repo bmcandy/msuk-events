@@ -3,6 +3,8 @@ This application scrapes the Motorsport UK events database and stores the events
 
 There is also a separate page that allows events to be queried directly from the API and filtered by the "Event Type" of the JSON returned from the API.
 
+This information is available on the Motorsport UK Sport:80 website, but only after you login.
+
 # References
 
 ## API
