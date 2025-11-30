@@ -32,8 +32,8 @@ Here's a breakdown for a newcomer:
 {{< youtube I45arAsG9io >}}
 
 **Types of Autotest:**
-* **Production Car Autotests (PCAs):** These are specifically for standard road cars, often with a maximum number of reverse gear engagements. Drivers can be as young as 14, but require a passenger.
-* **AutoSOLOs:** A simpler form of Autotest, typically on sealed surfaces, where all driving is forward-only (no reversing). Also open to standard road cars and often a great starting point from age 14+.
+* **Production Car Autotests (PCAs):** These are specifically for standard road cars, often with a maximum number of reverse gear engagements. Drivers can be as young as 13, but require a passenger.
+* **AutoSOLOs:** A simpler form of Autotest, typically on sealed surfaces, where all driving is forward-only (no reversing). Also open to standard road cars and often a great starting point from age 13+.
 * **Traditional Autotests (with reversing):** These can involve more complex routes and often allow a wider variety of cars, including specialist machines. Drivers must be 16+.
 
 **Why try it?**
